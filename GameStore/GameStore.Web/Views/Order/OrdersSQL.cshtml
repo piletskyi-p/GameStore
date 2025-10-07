@@ -1,0 +1,73 @@
+﻿@using GameStore.Web.App_LocalResources
+@using GameStore.Web.Helpers
+@model GameStore.Web.Models.ViewModels.EmptyOrdersView
+
+@{
+    int coutner = (Model.PageInfo.PageNumber - 1) * Model.PageInfo.PageSize;
+}
+
+<div class="orders">
+    <div class="Filters">
+        @using (Html.BeginForm("OrderFilterSQL", "Order", FormMethod.Post))
+        {
+            <h1>@GlobalRes.Filters</h1>
+            <p>@GlobalRes.From: <input type="date" name="DateFrom" value="@Model.DateFrom.ToString("yyyy-MM-dd")" required></p>
+            <p> @GlobalRes.To: <input type="date" name="DateTo" value="@Model.DateTo.ToString("yyyy-MM-dd")" required></p>
+            <button class="btn btn-secondary" type="submit">Filter</button>
+        }
+    </div>
+    @if (Model.Orders.Any())
+    {
+        <h1>@GlobalRes.Orders</h1>
+        <hr />
+
+       foreach (var order in Model.Orders)
+        {
+            <div style="display: flex; justify-content: space-around; ">
+                <div>
+                    @{ coutner++; }
+                    <p><b>#@coutner</b></p>
+                    <p><b>@GlobalRes.CustomerID: </b>@order.CustomerId</p>
+                    <p><b>@GlobalRes.Date:</b>@order.OrderDate</p>
+                    <p><b>@GlobalRes.IsPaid:</b>@order.IsPaid</p>
+                    <p><b>@GlobalRes.IsShipped:</b>@order.IsShipped</p>
+                    @if (order.IsShipped)
+                    {
+                        <p><b>@GlobalRes.ShippedDate:</b>@order.ShippedDate</p>
+                    }
+                    else
+                    {
+                        <p><b>@GlobalRes.ShippedDate:</b>Not set</p>
+                    }
+                </div>
+                <div>
+                    @if (!order.IsShipped && order.IsPaid)
+                    {
+                        @Html.ActionLink(@GlobalRes.SetShipped, "SetShipped", "Order", new { id = order.Id }, new { @class = "btn btn-warning" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(@GlobalRes.SetShipped, "SetShipped", "Order", new { id = order.Id }, new { @class = "btn btn-warning", disabled = "true" })
+                    }
+                </div>
+            </div>
+            <hr/>
+        }
+
+        if (Model.PageInfo.TotalPages < 1)
+        {
+            <div style="width: 100%; text-align: center;">
+                <div class="btn-group">
+                    @Html.PageLinks(Model.PageInfo, x => Url.Action("GetOrdersFromSql",
+                        new { DateFrom = Model.DateFrom, DateTo = Model.DateTo, page = x }))
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        <h1 style = "color: silver" > @GlobalRes.NotFound.</h1>
+    }
+
+</div>

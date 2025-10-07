@@ -1,0 +1,251 @@
+﻿@using System.Web.Optimization
+@using GameStore.Web.App_LocalResources
+
+@helper langSelector()
+{
+    var enabledLangsList = new List<string> { "en", "ru" };
+
+    var targetPath = Request.Url?.AbsolutePath;
+    var hostRoot = $"{Request.Url?.Scheme}://{Request.Url?.Authority}";
+    string Path = "";
+    if (targetPath != null)
+    {
+        if (targetPath.Contains("ru/") || targetPath.Contains("en/"))
+        {
+            Path = targetPath.Remove(0, 3);
+        }
+        else
+        {
+            Path = targetPath;
+        }
+    }
+
+    string targetUrlMask = $"{hostRoot}/{{0}}/{Path}";
+
+    <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if (@GlobalRes.CurrentLang == "en")
+            {
+                <img src="~/Content/Images/en.jpg" style="width: 20px; height: 20px" />
+                @Html.Raw("English")
+            }
+            else
+            {
+                <img src="~/Content/Images/ru.jpg" style="width: 20px; height: 20px" />
+                @Html.Raw("Russian")
+            }
+
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="@( string.Format(targetUrlMask, "en"))">
+                <img src="~/Content/Images/en.jpg" style="width: 20px; height: 20px;" /> English
+            </a>
+            <a class="dropdown-item" href="@( string.Format(targetUrlMask, "ru"))">
+                <img src="~/Content/Images/ru.jpg" style="width: 20px; height: 20px;" /> Russian
+            </a>
+        </div>
+    </div>
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Content/Site.css")
+    @Scripts.Render("~/Scripts/modernizr-2.6.2.js")
+    @Scripts.Render("~/Scripts/jquery-3.0.0.min.js")
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    @Styles.Render("~/Content/css/Custom/Layout.css")
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body class="body">
+    <div class="FirstNavbar">
+        <div>
+            @langSelector()
+        </div>
+        <div class="GameCounter">
+            <div class="TotalNumber">
+                @GlobalRes.TotalNumbersGames:
+            </div>
+            <div style="background-color: rgb(95, 95, 95); color: white; border-radius: 3px;">
+                @Html.Action("GetGameCount", "Game")
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row" style="display: flex; justify-content: space-around; margin-bottom: 30px; padding: 0">
+        <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 Logo">
+            <img src="~/Content/Images/gamesLogo.jpg" />
+        </div>
+        @if (!Context.User.Identity.IsAuthenticated)
+        {
+            <div class="col-sm-12 col-md-12 col-lg-1 col-xl-1">
+                @Html.ActionLink(@GlobalRes.LogIn, "Index", "Login", new { area = "" }, new { @class = "btn btn-success LogInOut" })
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-1 col-xl-1">
+                @Html.ActionLink(@GlobalRes.Register, "Register", "User", new { area = "" }, new { @class = "btn btn-success LogInOut" })
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                @Html.ActionLink(@GlobalRes.LogOut, "Logout", "Login", new { area = "" }, new { @class = "btn btn-success LogInOut" })
+            </div>
+        }
+    </div>
+
+    <div class="BlueBlock" style="margin-top: 1%; ">
+        <div class="row" style="margin-left: auto; margin-right: auto">
+            <ul class="ListBtn">
+                @if (Context.User.IsInRole("Manager"))
+                {
+                    <li> @Html.ActionLink(@GlobalRes.NewGame, "NewGame", "Game", new { area = "" }, new { @class = "btn ", style = "width:100%;" })</li>
+                }
+
+                @if (Context.User.IsInRole("User"))
+                {
+                    <li> @Html.ActionLink(@GlobalRes.Basket, "Basket", "Order", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                }
+
+                @if (Context.User.IsInRole("Manager"))
+                {
+                    <li> @Html.ActionLink(@GlobalRes.Publishers, "GetAll", "Publisher", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                    <li> @Html.ActionLink(@GlobalRes.Genres, "GetAllGenres", "Genre", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                    <li> @Html.ActionLink(@GlobalRes.Platforms, "GetAllPlatforms", "Platform", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                    <li> @Html.ActionLink(@GlobalRes.History, "GetAllOrders", "Order", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                    <li> @Html.ActionLink(@GlobalRes.Orders, "GetOrdersFromSQL", "Order", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                }
+
+                @if (Context.User.IsInRole("Administrator"))
+                {
+                    <li> @Html.ActionLink(@GlobalRes.Roles, "AllRoles", "Role", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                    <li> @Html.ActionLink(@GlobalRes.Users, "GetAllUsers", "User", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                }
+
+                @if (Context.User.Identity.IsAuthenticated)
+                {
+                    <li>@Html.ActionLink(@GlobalRes.Profile, "UserPage", "User", new { area = "" }, new { @class = "btn", style = "width:100%;" }) </li>
+                }
+
+                <li> @Html.ActionLink(@GlobalRes.Games, "Filter", "Game", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+                <li> @Html.ActionLink(@GlobalRes.RecommendedGames, "Recommended", "Game", new { area = "", userName = Context.User.Identity.Name }, new { @class = "btn", style = "width:100%;" })</li>
+                <li> @Html.ActionLink(@GlobalRes.Publishers, "GetAll", "Publisher", new { area = "" }, new { @class = "btn", style = "width:100%;" })</li>
+            </ul>
+        </div>
+        <div class="row" style="margin-left: auto;margin-right: auto; display: flex; justify-content: space-between;">
+            <div class="textBlueBlock col-sm-12 col-md-12 col-lg-7 col-xl-8">
+                <p class="firstText  col-sm-12 col-md-12">Life is short, play more. <br/>
+                A world light years beyond  your <br /> imagination.</p>
+            </div>
+            <div class="pictureComputer col-lg-4 col-xl-4">
+                <img src="~/Content/Images/GamePicture.png" />
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        @RenderBody()
+    </div>
+
+    <hr />
+    <div class="contacts">
+        <div class="greenBlockContacts">
+            <img class="contactsImage" src="~/Content/Images/email.png" />
+            <h4 style="margin-top: -44px; margin-left: 50px;">@GlobalRes.GetInTouch</h4>
+            <div class="fieldsGreen">
+                <div class="form-group " style="margin-top: 30px;">
+                    <label for="Input" class="fieldsGreenlabel">@GlobalRes.Name:</label>
+                    <input type="text" class="form-control" id="Input" placeholder="@GlobalRes.EnterName">
+                </div>
+                <div class="form-group " style="margin-top: 10px;">
+                    <label for="InputEmail" class="fieldsGreenlabel">@GlobalRes.Email:</label>
+                    <input type="email" class="form-control" id="InputEmail" placeholder="@GlobalRes.EnterEmail">
+                </div>
+                <div class="form-group " style="margin-top: 10px;">
+                    <label for="message" class="fieldsGreenlabel">@GlobalRes.Message:</label>
+                    <textarea type="text" rows="3" class="form-control" id="message" placeholder="@GlobalRes.Message..."></textarea>
+                </div>
+            </div>
+            <button type="submit" class="BtnSubmit">Submit</button>
+        </div>
+
+        <div class="blueBlockContacts">
+            <img class="contactsImage" src="~/Content/Images/twitter.png" />
+            <h4 style="margin-top: -44px; margin-left: 50px;">@GlobalRes.TwitterUpdates</h4>
+            <div class="textBlueContact">
+                <p style="color: blue; margin-top: 10px; padding: 10px;">
+                    Join our BIG Partners program for tons of free perks and an exclusive pet in Pet Simulator!
+                    <br />
+                    <small style="color: silver;">about 2 hours ago</small>
+                </p>
+                <p style="color: blue; margin-top: 10px; padding: 10px;">
+                    The collecting speed/reward change was reverted due to public opinion. Sorry about that!
+                    <br />
+                    <small style="color: silver;">about 6 hours ago</small>
+                </p>
+                <p style="color: blue; margin-top: 10px; padding: 10px;">
+                    There was a small forced patch that went out which fixed pet chances in eggs, most notably the random egg. Sorry about that
+                    <br />
+                    <small style="color: silver;">about 2 days ago</small>
+                </p>
+                <button type="submit" class="BtnSubmit">Follow</button>
+            </div>
+        </div>
+
+        <div class="orangeBlockContacts">
+            <img class="contactsImage" src="~/Content/Images/blog.png" />
+            <h4 style="margin-top: -44px; margin-left: 60px;">@GlobalRes.FromTheBlog</h4>
+            <div class="textBlueContact">
+                <p style="color: #ddc168; margin-top: 10px; padding: 10px;">
+                    Join our BIG Partners program for tons of free perks and an exclusive pet in Pet Simulator!
+                    <br />
+                </p>
+                <p style="color: #ddc168; margin-top: 10px; padding: 10px;">
+                    The collecting speed/reward change was reverted due to public opinion. Sorry about that!
+                    <br />
+                </p>
+                <p style="color: #ddc168; margin-top: 10px; padding: 10px;">
+                    There was a small forced patch that went out which fixed pet chances in eggs, most notably the random egg. Sorry about that
+                    <br />
+                </p>
+                <button type="submit" class="BtnSubmit">Blog</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <footer class="footer">
+        <div class="footerPart">
+            <p>&copy; @DateTime.Now.Year - GameStore Application</p>
+        </div>
+        <div class="footerPart">
+            <b>@GlobalRes.Links</b>
+            <ul>
+                <li><a href="https://gamestore.com.ua/?gclid=Cj0KCQjw3KzdBRDWARIsAIJ8TMT8W1V-ucyOAkRsBGz1wynhZ7i9eiHDNa1J2RRuj8s0MoXVAWjOXOIaAnuXEALw_wcB">gamestore.com.ua</a></li>
+                <li><a href="https://game-shop.com.ua/?gclid=Cj0KCQjw3KzdBRDWARIsAIJ8TMTQQqnKoE_6yew9QeeVpiQAroKu4eZcQ4TmsbUJ1k8eJjJh-UwkDf4aAp7gEALw_wcB">game-shop.com.ua</a></li>
+                <li><a href="http://gamestore.by/">gamestore.by</a></li>
+            </ul>
+        </div>
+        <div class="footerPart">
+            <b>@GlobalRes.CompanyInformation</b>
+            <ul>
+                <li><a href="#">@GlobalRes.AboutUs</a></li>
+                <li><a href="#">@GlobalRes.Contacts</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,236 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.CommentsViewModel
+
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    function setParentId(id, text) {
+        document.getElementById('CurrentParentId').value = id;
+        document.getElementById('CurrentParentName').value = text;
+        var closebtn = document.getElementById('close-imageParentName');
+        closebtn.style.display = "inline";
+
+        var textForDom = document.getElementById("CurrentParentNameP");
+        var textForP = document.createTextNode("To: " + text);
+
+        while (textForDom.firstChild) {
+            textForDom.removeChild(textForDom.firstChild);
+        }
+        textForDom.appendChild(textForP);
+        console.log("setParentId");
+    }
+
+    function setQuoteId(id, text) {
+        document.getElementById('CurrentQuoteId').value = id;
+        document.getElementById('CurrentQuoteText').value = text;
+        var textForDom = document.getElementById('CurrentQuoteTextP');
+        var textForP = document.createTextNode('Quote: ' + text);
+        var closebtn = document.getElementById('close-imageQuoteText');
+        closebtn.style.display = "inline";
+
+        while (textForDom.firstChild) {
+            textForDom.removeChild(textForDom.firstChild);
+        }
+        textForDom.appendChild(textForP);
+        console.log("setQuoteId");
+    }
+
+    function RemoveParentId() {
+        document.getElementById('CurrentParentId').value = 0;
+        document.getElementById('CurrentParentName').value = "";
+        var textForDom = document.getElementById('CurrentParentNameP');
+        var closebtn = document.getElementById('close-imageParentName');
+        closebtn.style.display = "none";
+
+        while (textForDom.firstChild) {
+            textForDom.removeChild(textForDom.firstChild);
+        }
+    }
+
+    function RemoveQuoteId() {
+        document.getElementById('CurrentQuoteId').value = 0;
+        document.getElementById('CurrentQuoteText').value = "";
+        var textForDom = document.getElementById('CurrentQuoteTextP');
+        var closebtn = document.getElementById('close-imageQuoteText');
+        closebtn.style.display = "none";
+
+        while (textForDom.firstChild) {
+            textForDom.removeChild(textForDom.firstChild);
+        }
+    }
+
+
+</script>
+
+
+<ul class="list-group">
+    @foreach (var com in @Model.Comments)
+    {
+        if (!string.IsNullOrEmpty(com.Body))
+        {
+
+            if (com.ParentId != 0)
+            {
+    <li class="list-group-item">
+        <a name="@com.Id" style="color: black">
+            <b>@com.Name </b>
+        </a>
+        @if (com.QuoteId != 0 && !string.IsNullOrEmpty(com.QuoteText))
+        {
+            <p><quote class="badge badge-secondary">@com.QuoteText</quote></p>
+        }
+        else if (com.QuoteId != 0 && string.IsNullOrEmpty(com.QuoteText))
+        {
+            <p style="color: red">@GlobalRes.ParentCommentHadBeenDeleted</p>
+        }
+        <p>
+            @if (com.ParentId != 0 && !string.IsNullOrEmpty(com.ParentName))
+            {
+            <p style="color: silver; display: inline;">@GlobalRes.Reply: </p> <a href="#@com.ParentId"> @com.ParentName, </a>
+            @com.Body
+        }
+        else
+        {
+            @com.Body
+        }
+            </p>
+            <br />
+            <input type="number" id="CurrentParentId" name="CurrentParentId" value="" hidden />
+            <input type="text" id="CurrentParentName" name="CurrentParentName" value="" hidden />
+            <input type="number" id="CurrentQuoteId" name="CurrentQuoteId" value="" hidden />
+            <input type="text" id="CurrentQuoteText" name="CurrentQuoteText" value="" hidden />
+
+            @if (!Model.IsDeletedGame && !Model.CurrentUser.IsBanned)
+            {
+            <a href="#" class="btn btn-primary" role="button" onclick="setParentId(@com.Id, '@com.Name')">@GlobalRes.Reply</a>
+            <a href="#" class="btn btn-primary" role="button" onclick="setQuoteId(@com.Id, '@com.Body')">@GlobalRes.Quote</a>
+            }
+            else
+            {
+                <a href="#" class="btn btn-primary" role="button" disabled>@GlobalRes.Reply</a>
+                <a href="#" class="btn btn-primary" role="button" disabled>@GlobalRes.Quote</a>
+            }
+
+
+            @if (Context.User.IsInRole("Moderator"))
+            {
+                <button type="button" class="btn btn-warning" style="margin-left: 2%;" onclick="del(@com.Id.ToString(), @com.GameId)" data-toggle="modal" data-target="#Modal">
+                    @GlobalRes.Delete
+                </button>
+                if (com.UserId != 0)
+                {
+                    if (!com.User.IsBanned && com.User.Id != Model.CurrentUser.Id)
+                    {
+                        @Html.ActionLink(@GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(@GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button", disabled = "true" })
+                    }
+                }
+                else
+                {
+                    @Html.ActionLink(GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button", disabled = "true" })
+                }
+
+            }
+        </li>
+                }
+                else
+                {
+                    <li class="list-group-item">
+                        <a name="@com.Id" style="color: black">
+                            <b>@com.Name </b>
+                        </a>
+                        @if (com.QuoteId != 0 && !string.IsNullOrEmpty(com.QuoteText))
+                        {
+                            <p><quote class="badge badge-secondary">@com.QuoteText</quote></p>
+                        }
+                        else if (com.QuoteId != 0 && string.IsNullOrEmpty(com.QuoteText))
+                        {
+                            <p style="color: red">@GlobalRes.ParentCommentHadBeenDeleted</p>
+                        }
+                        <p>
+                            @com.Body
+                        </p>
+                        <br />
+                        <input type="number" id="CurrentParentId" name="CurrentParentId" value="" hidden />
+                        <input type="text" id="CurrentParentName" name="CurrentParentName" value="" hidden />
+                        <input type="number" id="CurrentQuoteId" name="CurrentQuoteId" value="" hidden />
+                        <input type="text" id="CurrentQuoteText" name="CurrentQuoteText" value="" hidden />
+
+                        @if (!Model.IsDeletedGame && !Model.CurrentUser.IsBanned)
+                        {
+                        <a href="#" class="btn btn-primary" role="button" onclick="setParentId(@com.Id, '@com.Name')">@GlobalRes.Reply</a>
+                        <a href="#" class="btn btn-primary" role="button" onclick="setQuoteId(@com.Id, '@com.Body')">@GlobalRes.Quote</a>
+                        }
+                        else
+                        {
+                        <a href="#" class="btn btn-primary" role="button" disabled>@GlobalRes.Reply</a>
+                            <a href="#" class="btn btn-primary" role="button" disabled>@GlobalRes.Quote</a>
+                        }
+
+
+                        @if (Context.User.IsInRole("Moderator"))
+                        {
+                            <button type="button" class="btn btn-warning" style="margin-left: 2%;" onclick="del(@com.Id.ToString(), @com.GameId)" data-toggle="modal" data-target="#Modal">
+                                @GlobalRes.Delete
+                            </button>
+                            if (com.UserId != 0)
+                            {
+                                if (!com.User.IsBanned && com.User.Id != Model.CurrentUser.Id)
+                                {
+                                    @Html.ActionLink(GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button", disabled = "true" })
+                                }
+                            }
+                            else
+                            {
+                                @Html.ActionLink(GlobalRes.Ban, "Ban", "Comment", new { commentId = com.Id, gamekey = Model.GameKey }, new { @class = "btn btn-danger", role = "button", disabled = "true" })
+                            }
+                        }
+                    </li>
+                }
+            }
+        }
+</ul>
+@Html.ValidationMessageFor(comm => comm.Comments.FirstOrDefault().Body, null, new { id = "newCommentText" })
+
+@if (!Model.IsDeletedGame && !Model.CurrentUser.IsBanned)
+{
+    <div>
+        <h3>@GlobalRes.AddComment:</h3>
+        <input type="button" value="X" id="close-imageParentName"
+               onclick="RemoveParentId()" />
+        <p style="display: inline;" id="CurrentParentNameP"> </p> <br />
+        <input type="button" value="X" id="close-imageQuoteText" onclick="RemoveQuoteId()" />
+        <p style="display: inline;" id="CurrentQuoteTextP"> </p>
+
+        @Html.TextBoxFor(model => model.NewName, new
+        {
+            placeholder = GlobalRes.YourName, @Value = Model.NewName,
+            id = "newCommentName",
+            required = "required", @class = "form-control"
+        })
+        @Html.ValidationMessageFor(model => model.NewName, null, new { id = "newCommentName" })
+
+        @Html.TextBoxFor(model => model.NewBody, new
+        {
+            placeholder = GlobalRes.Comment, @Value = Model.NewBody,
+            id = "newCommentText",
+            required = "required", @class = "form-control"
+        })
+        @Html.ValidationMessageFor(model => model.NewBody, null, new { id = "newCommentText" })
+        <br />
+    </div>
+    <button class="btn btn-primary" id="btnForLogIn" type="submit">Add</button>
+}
+else
+{
+    <h2 style="color: red">You are banned. You can not comment anything.</h2>
+}

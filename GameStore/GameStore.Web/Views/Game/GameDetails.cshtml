@@ -1,0 +1,97 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.GameViewModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "GameDetails";
+}
+<div style="padding: 20px;">
+
+    <h1> @Model.Name </h1>
+    <p><img src="~/Content/Images/Games/@Html.Action("GetImageAsync", "Game", new {key =@Model.Key})" class="gameImage" /></p>
+    <p> <b>@GlobalRes.Key:</b> @Model.Key </p>
+    <p><b> @GlobalRes.Description:</b> @Model.Description </p>
+    <p> <b> @GlobalRes.Price:</b> @Model.Price </p>
+    <p>
+        <b>  @GlobalRes.Genres:</b>  <br />
+        @foreach (var genre in Model.Genres)
+        {
+            if (!genre.IsDeleted)
+            {
+                @genre.Name <br />
+            }
+        }
+    </p>
+    <p>
+        <b>@GlobalRes.Platforms:</b> <br />
+        @foreach (var platform in Model.Platforms)
+        {
+            if (!platform.IsDeleted)
+            {
+                @platform.Type <br />
+            }
+        }
+    </p>
+
+    <p>
+        <b>@GlobalRes.Publisher:</b>
+        @if (Model.Publisher.CompanyName != "No publisher")
+        {
+            @Html.ActionLink(Model.Publisher.CompanyName, "PublisherDetailsById", "Publisher", new { id = Model.Publisher.Id}, new { style = "color: blue;" ,
+                target = "_blank"})
+        }
+        else
+        {
+            <label style="color: silver">@GlobalRes.NoPublisher</label>
+        }
+    </p>
+
+    <p>
+        <b>@GlobalRes.Publication @GlobalRes.Date:</b> @Model.PublicationDate
+    </p>
+
+
+    @Html.ActionLink(GlobalRes.ViewAllComments, "GetAllCommentsByGameKey", "Comment", new { gamekey = @Model.Key}, new { @class= "btn btn-primary mb-2",
+    target = "_blank"})
+    <br />
+    @if (!Model.IsDeleted)
+    {
+        @Html.ActionLink(GlobalRes.Download, "Download", "Game", new { gamekey = @Model.Key}, new {
+       @class = "btn btn-primary mb-2",
+       target = "_blank"})
+    }
+    else
+    {
+        <p style="color: silver">@GlobalRes.Download</p>
+    }
+
+    <br />
+    @if (Model.UnitInStock == 0 || Model.IsDeleted)
+    {
+        <p style="color: silver">@GlobalRes.Buy</p>
+    }
+    else
+    {
+        if (Context.User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink(GlobalRes.Buy, "Buy", "Order", new { gamekey = Model.Key },
+                new {@class= "btn btn-primary", onclick="ModalBuy()", role = "button" })
+        }
+        else
+        {
+            @Html.ActionLink(GlobalRes.Buy, "Register", "User", new { }, new { @class = "btn btn-primary", role = "button" })
+        }
+
+    }
+
+    <div id="snackbar">@GlobalRes.ThisGameWasAddedToYourBasket.</div>
+</div>
+<script>
+    function ModalBuy() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>

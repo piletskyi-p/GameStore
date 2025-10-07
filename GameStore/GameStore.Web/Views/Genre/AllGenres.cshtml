@@ -1,0 +1,69 @@
+﻿@using GameStore.Web.App_LocalResources
+@model IEnumerable<GameStore.Web.Models.ViewModels.GenreViewModel>
+
+@{
+    int counter = 1;
+}
+
+<div class="allGenres">
+
+    <h1>@GlobalRes.Genres</h1>
+    <table class="table" style="">
+        <tbody>
+            @foreach (var genre in Model)
+            {
+                if (genre.ParentId == 0)
+                {
+                    <tr>
+                        <th scope="row">@counter</th>
+                        <td>@genre.Name</td>
+                        <td>
+                            <div class="btn-group dropright">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu">
+                                    @Html.ActionLink(@GlobalRes.AddChild, "NewGenre", "Genre", new { parentId = genre.Id }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Edit, "Edit", "Genre", new { id = genre.Id }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Remove, "Remove", "Genre", new { id = genre.Id }, new { @class = "dropdown-item" })
+                                </div>
+                            </div>
+                        </td>
+                        @{ counter++;}
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th scope="row">@counter</th>
+                        @if (string.IsNullOrEmpty(genre.ParentName))
+                        {
+                            <td>@genre.Name</td>
+                        }
+                        else
+                        {
+                            <td><text style="color: silver">@genre.ParentName -></text> @genre.Name</td>
+                        }
+                        <td>
+                            <div class="btn-group dropright">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu">
+                                    @Html.ActionLink(@GlobalRes.AddChild, "NewGenre", "Genre", new { parentId = genre.Id }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Edit, "Edit", "Genre", new { id = genre.Id }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Remove, "Remove", "Genre", new { id = genre.Id }, new { @class = "dropdown-item" })
+                                </div>
+                            </div>
+                        </td>
+                        @{ counter++;}
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div style="margin-top: 50px">
+        @Html.ActionLink(@GlobalRes.New, "NewGenre", "Genre", new { parentId = 0 }, new { @class = "btn btn-primary" })
+    </div>
+
+</div>

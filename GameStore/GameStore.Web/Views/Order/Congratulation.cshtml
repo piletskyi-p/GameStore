@@ -1,0 +1,14 @@
+﻿@using GameStore.Web.App_LocalResources
+
+<div style="padding: 20px;">
+    @using (Html.BeginForm("Filter", "Game", FormMethod.Get))
+    {
+        <div class="jumbotron">
+            <h1 class="display-4">@GlobalRes.Congratulations</h1>
+            <p class="lead">@GlobalRes.YouBoughtGame </p>
+            <hr class="my-4">
+            <p>@GlobalRes.RedirectToGames</p>
+            <button class="btn btn-primary btn-lg" id="btnForLogIn" type="submit">@GlobalRes.Games</button>
+        </div>
+    }
+</div>

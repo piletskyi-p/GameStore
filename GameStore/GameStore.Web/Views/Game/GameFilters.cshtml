@@ -1,0 +1,278 @@
+﻿@using GameStore.Web.App_LocalResources
+@using GameStore.Web.Pagination
+@model GameStore.Web.Models.ViewModels.FilterIndexViewModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "Filter";
+}
+
+@{
+    var dropDownSelect = new string[] { @GlobalRes.MostPopular, GlobalRes.MostCommented,
+GlobalRes.PriceASC, GlobalRes.PriceDESC, GlobalRes.NewbyDate };
+    var publishedDate = new string[] { GlobalRes.None, GlobalRes.LastWeek,
+GlobalRes.LastMonth, GlobalRes.LastYear, "2 " + GlobalRes.YearsAgo, "3 " + GlobalRes.YearsAgo };
+    var dropDownPagination = new string[] { GlobalRes.All, "10", "20", "50", "100" };
+    int counterDropDown = 1;
+}
+
+<div class="GameFilterPage">
+
+    <div class="GameForFilter">
+        @if (Model.FilterModel.Games.Any())
+        {
+            <h1 style="text-align: center; margin-bottom: 20px;">@GlobalRes.Games</h1>
+
+            <div style="text-align: center;">
+                @foreach (var game in Model.FilterModel.Games)
+                {
+                    <div style="display: flex; text-align: center; justify-content: center">
+                        <div style="width: 350px; height: 500px; margin: 0">
+                           <img src="~/Content/Images/Games/@Html.Action("GetImageAsync", "Game", new {key = @game.Key})" class="gameImage" />
+                        </div>
+                        <div>
+                            <div class="btn-group" style="text-align: left; margin-left: 30px;">
+                                <p><b>@game.Name (@game.Key)</b></p>
+                                <p><b>Price: </b> @game.Price</p>
+                                <p> <b>UnitInStock: </b> @game.UnitInStock</p>
+                                <p> <b>Rating: </b> <label class="ratingText"> @game.Rating </label></p>
+                                <p>
+                                    <b>Vote: </b>
+                                    @Html.ActionLink("1", "VoteForGame", "Game", new { key = game.Key, mark = 1, userName = Context.User.Identity.Name },
+                                        new { @class = "bntForVote", })
+                                    @Html.ActionLink("2", "VoteForGame", "Game", new { key = game.Key, mark = 2, userName = Context.User.Identity.Name  },
+                                        new { @class = "bntForVote", })
+                                    @Html.ActionLink("3", "VoteForGame", "Game", new { key = game.Key, mark = 3, userName = Context.User.Identity.Name  },
+                                        new { @class = "bntForVote", })
+                                    @Html.ActionLink("4", "VoteForGame", "Game", new { key = game.Key, mark = 4, userName = Context.User.Identity.Name  },
+                                        new { @class = "bntForVote", })
+                                    @Html.ActionLink("5", "VoteForGame", "Game", new { key = game.Key, mark = 5, userName = Context.User.Identity.Name  },
+                                        new { @class = "bntForVote", })
+                                </p>
+
+                                @Html.ActionLink(@GlobalRes.Details, "GetGameDetailsByKey", "Game", new {key = game.Key},
+                                    new {@class = "btn btn-primary bntForGames",})
+                                @if (Context.User.IsInRole("Manager"))
+                                {
+                                    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" style="">
+                                        @Html.ActionLink(@GlobalRes.Edit, "EditGame", "Game", new {id = game.Id}, new {@class = "dropdown-item"})
+                                        @Html.ActionLink(@GlobalRes.Remove, "Remove", "Game", new {id = game.Id}, new {@class = "dropdown-item"})
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                }
+            </div>
+            if (Model.PageInfo.TotalPages > 1)
+            {
+                if (Model.FilterModel.SortBy == 0)
+                {
+                    <div style="width: 100%; text-align: center;">
+                        @Html.PageLinks(Model.PageInfo.PageNumber, Model.PageInfo.TotalPages, Request.Url?.ToString())
+                    </div>
+                }
+                else
+                {
+                    <div style="width: 100%; text-align: center;">
+                        @Html.PageLinks(Model.PageInfo.PageNumber, Model.PageInfo.TotalPages, Request.Url?.ToString())
+                    </div>
+                }
+
+            }
+        }
+        else
+        {
+            <h1 style="color:silver">@GlobalRes.NotFound</h1>
+        }
+    </div>
+
+
+    @using (Html.BeginForm("Filters", "Game", FormMethod.Get))
+    {
+        <div class="serach">
+            <h1>@GlobalRes.Filters</h1>
+            <input class="form-control autocomplete" maxlength="80" name="SearchName"
+                   placeholder="Search by name" value="@Model.FilterModel.SearchName" />
+            <button type="submit" style="margin-top: 10px; margin-bottom: 10px;" class="btn btn-success">@GlobalRes.Filter</button>
+        </div>
+
+        <div class="filters">
+            <div>
+                <div class="FilterBox">
+                    <h2>@GlobalRes.Genres:</h2>
+                    @foreach (var genre in Model.FilterModel.Genres)
+                    {
+                        if (genre.ParentId == 0)
+                        {
+                            if (Model.FilterModel.GenresId.IndexOf(genre.Id) != -1)
+                            {
+                                <input type="checkbox" id="@genre.Id"
+                                       name="GenresId" value="@genre.Id" checked>
+                                <label for="@genre.Id">@genre.Name</label>
+                                <br />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="@genre.Id"
+                                       name="GenresId" value="@genre.Id">
+                                <label for="@genre.Id">@genre.Name</label>
+                                <br />
+                            }
+                        }
+                        else
+                        {
+                            if (Model.FilterModel.GenresId.IndexOf(genre.Id) != -1)
+                            {
+                                <input type="checkbox" id="{genre}@genre.Id"
+                                       name="GenresId" value="@genre.Id" checked>
+                                <label for="{genre}@genre.Id"><label for="{genre}@genre.Id" style="color: silver">@genre.ParentName -></label> @genre.Name</label>
+                                <br />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="{genre}@genre.Id"
+                                       name="GenresId" value="@genre.Id">
+                                <label for="{genre}@genre.Id"><label for="{genre}@genre.Id" style="color: silver">@genre.ParentName -></label> @genre.Name</label>
+                                <br />
+                            }
+                        }
+                    }
+                </div>
+                <div>
+                    <h2>@GlobalRes.Platforms:</h2>
+                    @foreach (var platform in Model.FilterModel.Platforms)
+                    {
+                        if (Model.FilterModel.PlatformsId.IndexOf(platform.Id) != -1)
+                        {
+                            <input type="checkbox" id="{platform}@platform.Id"
+                                   name="PlatformsId" value="@platform.Id" checked>
+                            <label for="{platform}@platform.Id">@platform.Type</label>
+                            <br />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="{platform}@platform.Id"
+                                   name="PlatformsId" value="@platform.Id">
+                            <label for="{platform}@platform.Id">@platform.Type</label>
+                            <br />
+                        }
+
+                    }
+                </div>
+                <div>
+                    <h2>@GlobalRes.Publishers:</h2>
+                    @foreach (var publisher in Model.FilterModel.Publishers)
+                    {
+                        if (Model.FilterModel.PublishersId.IndexOf(publisher.Id) != -1)
+                        {
+                            <input type="checkbox" id="{publisher}@publisher.Id"
+                                   name="PublishersId" value="@publisher.Id" checked>
+                            <label for="{publisher}@publisher.Id">@publisher.CompanyName</label>
+                            <br />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="{publisher}@publisher.Id"
+                                   name="PublishersId" value="@publisher.Id">
+                            <label for="{publisher}@publisher.Id">@publisher.CompanyName</label>
+                            <br />
+                        }
+
+                    }
+                </div>
+                <div>
+                    <h2>@GlobalRes.Published:</h2>
+                    @for (int i = 0; i < publishedDate.Length; ++i)
+                    {
+                        if (Model.FilterModel.PublisherDateId == i)
+                        {
+                            <input type="radio" id="{date}@i"
+                                   name="PublisherDateId" value="@i" checked>
+                            <label for="{date}@i">@publishedDate[i]</label>
+                            <br />
+                        }
+                        else
+                        {
+                            <input type="radio" id="{date}@i"
+                                   name="PublisherDateId" value="@i">
+                            <label for="{date}@i">@publishedDate[i]</label>
+                            <br />
+                        }
+                    }
+
+                </div>
+            </div>
+            <div style="margin-left: 3%; margin-top: 2%;">
+                <b> @GlobalRes.PriceRange</b> <br />
+                @GlobalRes.From:
+                <input type="text" value="@Model.FilterModel.PriceRangeFrom" name="PriceRangeFrom" pattern="[0-9]{0,8}" />
+                <br />
+                <br/>
+                @*@Html.EditorFor(price => price.FilterModel.PriceRangeFrom, "", new {type ="number", style = "placegolder: From" }) <br />*@
+                @GlobalRes.To:
+                <input type="text" value="@Model.FilterModel.PriceRangeTo" name="PriceRangeTo" pattern="[0-9]{0,8}" />
+                <br />
+                @*@Html.EditorFor(price => price.FilterModel.PriceRangeTo, "", new { type = "number", style = "placegolder: To" }) <br />*@
+            </div>
+            <div style="margin-left: 3%; margin-top: 2%; display: inline-block">
+                <label for="exampleFormControlSelect1">@GlobalRes.SortBy</label>
+                <select class="form-control" id="inlineFormCustomSelect" name="SortBy">
+                    @foreach (var value in dropDownSelect)
+                    {
+                        if (Model.FilterModel.SortBy == counterDropDown)
+                        {
+                            <option value="@counterDropDown" selected>@value</option>
+                            counterDropDown++;
+                        }
+                        else
+                        {
+                            <option value="@counterDropDown">@value</option>
+                            counterDropDown++;
+                        }
+
+                    }
+                </select>
+            </div>
+            <div class="form-group" style="margin-left: 3%; margin-top: 2%; display: inline-block">
+                <label for="exampleFormControlSelect1">@GlobalRes.ItemsOnPage</label>
+                <select class="form-control" name="NumberOfItemPage" id="exampleFormControlSelect1">
+                    @foreach (var page in dropDownPagination)
+                    {
+                        if (page == Model.FilterModel.NumberOfItemPage.ToString())
+                        {
+                            <option value="@page" selected>@page</option>
+                        }
+                        else
+                        {
+                            <option value="@page">@page</option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </div>
+        if (Context.User.IsInRole("Moderator"))
+        {
+            @Html.ActionLink(@GlobalRes.Deleted, "GetDeletedGames", "Game", new { area = "" }, new { @class = "btn btn-danger", style = "margin-top: 10px;" })
+        }
+    }
+</div>
+
+
+<script>
+    $(function () {
+        var availableTags = @Html.Raw(Json.Encode(Model.FilterModel.GameNames));
+
+        $(".autocomplete").autocomplete({
+            source: availableTags
+        });
+    });
+</script>

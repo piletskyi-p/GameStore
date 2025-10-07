@@ -1,0 +1,41 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.UserViewModel
+
+<div style="padding: 20px;">
+    <h2>Edit sender</h2>
+
+    @using (Html.BeginForm("EditSender", "User", FormMethod.Post))
+    {
+        <div class="form-group" id="Sender">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Sender</label>
+                <select class="form-control" name="senderTypeId" id="exampleFormControlSelect1">
+                    @if (Model.SenderTypeId == 0)
+                    {
+                        <option value="0" selected>Email</option>
+                        <option value="1">Mobile</option>
+                        <option value="2">Sms</option>
+                    }
+                    else if (Model.SenderTypeId == 1)
+                    {
+                        <option value="0">Email</option>
+                        <option value="1" selected>Mobile</option>
+                        <option value="2">Sms</option>
+                    }
+                    else
+                    {
+                        <option value="0">Email</option>
+                        <option value="1">Mobile</option>
+                        <option value="2" selected>Sms</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <br />
+        <button type="submit" style="margin: auto;" class="btn btn-primary">@GlobalRes.Edit</button>
+    }
+
+</div>
+

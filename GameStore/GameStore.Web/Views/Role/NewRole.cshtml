@@ -1,0 +1,18 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.RoleViewModel
+
+
+@using (Html.BeginForm("NewRole", "Role", FormMethod.Post))
+{
+<div style="padding: 20px;">
+    <h2>@GlobalRes.New</h2>
+    <div class="input-group">
+        @Html.TextBoxFor(ed => ed.Name, "",
+            new {@class = "form-control", placeholder = @GlobalRes.Name, value = Model.Name})
+    </div><br />
+    @Html.ValidationMessageFor(val => val.Name, "", new { style = "color: red;" })<br>
+
+    <br />
+    <button class="btn btn-secondary" id="btnForLogIn" type="submit">@GlobalRes.Add</button>
+</div>
+}

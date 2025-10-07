@@ -1,0 +1,547 @@
+﻿.body {
+    padding: 0;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+@media (max-width: 1200px) and (min-width: 992px) {
+    .pictureComputer img {
+        width: 100% !important;
+    }
+
+    .BtnSubmit {
+        margin-left: 40% !important;
+    }
+
+    .fieldsGreen input {
+        width: 150px !important;
+        margin: auto;
+    }
+
+    .fieldsGreen textarea {
+        width: 150px !important;
+        margin: auto;
+    }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+    .pictureComputer {
+        display: none
+    }
+}
+
+@media (max-width: 992px) and (min-width: 576px) {
+    .body {
+        padding: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .contacts {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .textBlueContact p{
+        font-size: 20px;
+    }
+
+        .contacts div {
+            width: 90%;
+            margin-top: 5%;
+            margin-bottom: 6%;
+            font-size: 40px;
+        }
+
+    .greenBlockContacts h4 {
+        font-family: Impact, fantasy;
+        font-size: 40px;
+        width: 500px !important;
+        margin-top: -80px;
+    }
+
+    .headerForGreen {
+        margin-top: -15px !important;
+    }
+
+
+    .fieldsGreen {
+        width: 100% !important;
+    }
+    .fieldsGreen div {
+        margin-top: -6% !important;
+        width: 100% !important;
+        align-items: center;
+    }
+
+    .fieldsGreen input {
+        max-width: 90% !important;
+        width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+        .fieldsGreen textarea {
+            max-width: 90% !important;
+            width: 90% !important;
+        }
+
+    .fieldsGreen label {
+        margin-left: 20px !important;
+        font-size: 20px;
+    }
+
+    .footer {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer div{
+        margin-top: 30px;
+        font-size: 30px;
+    }
+
+    .blueBlockContacts h4 {
+        font-size: 40px;
+        font-family: Impact, fantasy;
+        margin-top: -60px !important;
+    }
+
+    .orangeBlockContacts h4 {
+        font-size: 40px;
+        font-family: Impact, fantasy;
+        margin-top: -60px !important;
+    }
+
+    .LogoAndBth {
+        display: flex;
+        align-content: space-between;
+        justify-content: space-between;
+    }
+
+    .LogInOut {
+        width: 100%;
+    }
+
+    .Logo {
+        text-align: center;
+        padding: 0;
+    }
+
+        .Logo img { width: 100%!important; }
+
+    .BlueBlock {
+        text-align: center;
+    }
+
+    .firstText {
+        margin-top: -20px;
+        text-align: center;
+    }
+
+    ul.ListBtn {
+        padding: 20px;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ListBtn li {
+        margin-top: 2%;
+        list-style-type: none;
+        border-radius: 6px !important;
+    }
+
+    .pictureComputer {
+        display: none !important;
+    }
+
+    .BtnSubmit {
+        width: 140px !important;
+        font-size: 30px;
+        margin-top: -40px !important;
+        margin-left: 30%;
+    }
+
+    .textBlueBlock {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .body {
+        padding: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .Logo img {
+        width: 100% !important;
+    }
+
+    .TotalNumber {
+        display: none;
+    }
+
+    .contacts {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pictureComputer {
+        display: none
+    }
+
+
+        .contacts div {
+            width: 90%;
+            margin-top: 5%;
+            margin-bottom: 10%;
+            font-size: 40px;
+        }
+
+    .greenBlockContacts h4 {
+        font-size: 30px;
+        font-family: Impact, fantasy;
+        margin-top: -60px !important;
+        width: 100% !important;
+    }
+
+    .textBlueContact p{
+        font-size: 20px;
+    }
+
+    .fieldsGreen div {
+        margin-top: -6% !important;
+        width: 100%;
+    }
+
+    .fieldsGreen input {
+        max-width: 90% !important;
+        width: 90% !important;
+    }
+
+    .fieldsGreen textarea {
+        max-width: 90% !important;
+        width: 90% !important;
+    }
+
+    .fieldsGreen label {
+        margin-left: 20px !important;
+        font-size: 20px;
+    }
+
+    .blueBlockContacts h4 {
+        font-size: 30px;
+        font-family: Impact, fantasy;
+        margin-top: -35px !important;
+    }
+
+    .orangeBlockContacts h4 {
+        font-size: 30px;
+        font-family: Impact, fantasy;
+        margin-top: -40px !important;
+    }
+
+    .LogInOut {
+        width: 100%;
+    }
+
+    .BlueBlock {
+        text-align: center;
+    }
+
+    .Logo {
+        text-align: center;
+        padding: 0;
+
+    }
+
+    ul.ListBtn {
+        padding: 20px;
+        flex-direction: column;
+        display: flex;
+        margin: 0;
+    }
+
+    .textBlueBlock {
+        text-align: center;
+        width: 100%;
+        align-items: center;
+    }
+
+    .classList {
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .ListBtn li {
+        margin-top: 2%;
+        border: 2px solid #bdbdbd;
+        border-radius: 6px !important;
+        list-style-type: none;
+        background-color: #f7f7f7;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+
+    .footer {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .footer div{
+        margin-top: 30px;
+        font-size: 30px;
+    }
+
+        .ListBtn li a {
+            text-align: center;
+        }
+
+    .textBlueBlock {
+        text-align: center;
+        width: 100%;
+        align-items: center;
+        display: flex;
+        flex: 2;
+        align-items: flex-start;
+    }
+
+    .pictureComputer {
+        display: none !important;
+    }
+
+    .BtnSubmit {
+        width: 140px !important;
+        font-size: 30px;
+        margin-left: 50% !important;
+        margin-top: auto;
+    }
+}
+
+.FirstNavbar {
+    display: flex;
+    align-items: center;
+}
+
+.GameCounter {
+    display: flex;
+    margin-left: auto;
+    font-size: 20px;
+}
+
+.Logo {
+    padding: 0;
+    text-align: left;
+
+}
+
+    .Logo img {
+        width: 80%;
+    }
+
+.BlueBlock {
+    width: 100%;
+    background-color: #5175a9;
+    border-radius: 8px;
+    color: white;
+}
+
+.ListBtn {
+    margin-top: -14px;
+}
+
+    .ListBtn li:first-child {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .ListBtn li:last-child {
+        border-radius: 0 10px 10px 0;
+    }
+
+.firstText {
+    text-align: left;
+    margin-top: 10px;
+    width: 100%;
+    
+    font-size: 30px;
+    font-family: Impact, fantasy;
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+}
+
+.secondText {
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    font-family: Impact, fantasy;
+    font-size: 30px;
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+}
+
+.ListBtn {
+    width: 100%;
+    text-align: right;
+    padding-right: 40px;
+}
+
+.ListBtn ul {
+    display: block;
+
+}
+
+    .ListBtn > li {
+        display: inline-block;
+        margin-left: -4px;
+    }
+
+.BlueBlock > ul > li {
+    display: inline;
+}
+
+.ListBtn li {
+    border: 2px solid #bdbdbd;
+    list-style-type: none;
+    background-color: #f7f7f7;
+}
+
+.ListBtn li a {
+  color: #d98a44;
+ font-weight: 600;
+}
+
+.pictureComputer img {
+    margin-top: 10px !important;
+    width: 65%;
+    flex: 1;
+    position: absolute;
+}
+.pictureComputer {
+    display: flex;
+    flex: 1;
+}
+
+.fieldsGreen {
+    width: 100% !important;
+}
+
+.contacts {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.greenBlockContacts {
+    background-color: #eaf0d8;
+    border: 2px solid #CEF6CE;
+    border-radius: 5px;
+    display: flex;
+    width: 31%;
+    flex-direction: column;
+}
+
+.contactsImage {
+    width: 50px;
+    height: 50px;
+    margin-top: -35px;
+    margin-left: -10px !important;
+}
+
+.fieldsGreen input {
+    width: 200px;
+    margin: auto;
+}
+
+.fieldsGreen textarea {
+    width: 200px;
+    margin: auto;
+}
+
+.blueBlockContacts {
+    background-color: #e0edf1;
+    border: 2px solid #cae6ee;
+    border-radius: 5px;
+    display: flex;
+    width: 31%;
+    flex-direction: column;
+}
+
+.orangeBlockContacts {
+    background-color: #f0ede4;
+    border: 2px solid #f1ebd8;
+    border-radius: 5px;
+    display: flex;
+    width: 31%;
+    flex-direction: column;
+}
+
+.greenBlockContactsInput {
+    flex-direction: column;
+}
+
+
+.BtnSubmit {
+    border: 2px solid #f09f23;
+    background-color: #fcb13d;
+    color: white;
+    border-radius: 7px;
+    margin-left: 50%;
+    margin-bottom: 20px;
+    width: 100px;
+}
+
+.textBlueContact p{
+    border-bottom-style: dotted;
+    border-bottom-color: silver;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contactsImageMail {
+    margin-left: -100px;
+    width: 50px;
+    height: 50px;
+    margin-top: -30px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 180px;
+}
+
+.footerPart li {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footerPart ul {
+    padding: 0;
+    margin-top: 10px;
+}
+.footerPart a {
+    color: silver;
+}
+
+.login {
+    margin-left: 10%;
+}
+
+.classList {
+    display: inline-block;
+    
+}
+
+.fieldsGreenlabel {
+    margin-left: 15% !important;
+}

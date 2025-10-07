@@ -1,0 +1,30 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.GenreViewModel
+
+@{
+    ViewBag.Title = "NewGenre";
+}
+
+<div class="newEntity">
+    <h1>@GlobalRes.New </h1>
+    @using (Html.BeginForm("NewGenre", "Genre", new { ParentId = Model.ParentId }, FormMethod.Post))
+    {
+        for (int i = 0; i < Model.GenreTranslates.Count; ++i)
+        {
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <img src="~/Content/Images/@{ @Html.Raw(Model.GenreTranslates[i].Language.Key)}.jpg" style="width: 20px; height: 20px; " />
+                </span>
+                @Html.TextBoxFor(ed => ed.GenreTranslates[i].Name, "", new { @class = "form-control", placeholder = @GlobalRes.Name })<br>
+                @Html.ValidationMessageFor(val => val.GenreTranslates[i].Name, "", new { style = "color: red;" })
+
+                @Html.HiddenFor(ed => ed.GenreTranslates[i].LanguageId, new { value = Model.GenreTranslates[i].LanguageId })
+                @Html.HiddenFor(ed => ed.GenreTranslates[i].GenreId, new { value = Model.GenreTranslates[i].GenreId })
+            </div>
+            <br />
+        }
+
+        <br />
+        <button class="btn btn-success" id="btnForLogIn" type="submit">@GlobalRes.Add</button>
+    }
+</div>

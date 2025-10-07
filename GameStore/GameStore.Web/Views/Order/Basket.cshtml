@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.OrderViewModel
+
+
+<div class="basket">
+    @using (Html.BeginForm("Order", "Order", new { }, FormMethod.Get))
+    {
+
+        if (Model.Id != 0)
+        {
+            <h1>@GlobalRes.Basket:</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">@GlobalRes.Key</th>
+                        <th scope="col">@GlobalRes.Price</th>
+                        <th scope="col">@GlobalRes.Quantity</th>
+                        <th scope="col">@GlobalRes.Discount</th>
+                        <th scope="col">@GlobalRes.Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.OrderDetails)
+                    {
+                        <tr>
+                            <th scope="row">@detail.ProductID</th>
+                            <td>@detail.Price</td>
+                            <td>@detail.Quantity</td>
+                            <td>@detail.Discount </td>
+                            <td>
+                                @Html.ActionLink(@GlobalRes.Remove, "RemoveFromBasket", "Order", new { idorderdetails = detail.Id }, new { @class= "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <b1>Time:</b1>
+            @String.Format("{0:F}", Model.OrderDate);<br/>
+            if (Context.User.IsInRole("User") || Context.User.IsInRole("Manager")
+                || Context.User.IsInRole("Moderator") || Context.User.IsInRole("Publisher"))
+            {
+                <button class="btn btn-success" style="float: right" type="submit">@GlobalRes.Pay</button>
+            }
+        }
+        else
+        {
+            <h1>@GlobalRes.YourBasketIsEmpty.</h1>
+        }
+    }
+
+</div>

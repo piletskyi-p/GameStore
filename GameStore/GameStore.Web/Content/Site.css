@@ -1,0 +1,393 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+Set padding to keep content from hitting the edges
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+    max-height: 300px;
+}
+
+
+.field-validation-error {
+    color: red;
+}
+
+.newEntityBtn {
+    text-align: center;
+    display: block;
+    width: 80px;
+    height: 25px;
+    text-decoration: none;
+    color: black;
+    border-radius: 8px;
+    border: 1px solid black;
+}
+
+.ui-autocomplete {
+    position: absolute;
+    z-index: 1000;
+    cursor: default;
+    padding: 0;
+    margin-top: 2px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .ui-autocomplete > li {
+        padding: 3px 20px;
+    }
+
+        .ui-autocomplete > li.ui-state-focus {
+            background-color: #DDD;
+        }
+
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
+.filters {
+    height: 400px;
+    overflow: scroll;
+    text-align: left;
+    padding: 5px;
+    border: 1px solid silver;
+    border-radius: 10px 0 0 10px;
+    overflow-x: hidden;
+}
+
+.GameForFilter {
+    width: 70%;
+}
+
+@media (max-width: 992px) {
+    .GameFilterPage {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .editUser {
+        flex-direction: column;
+    }
+
+    .mainCheck {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .users {
+        flex-direction: column;
+        text-align: center;
+        list-style-type: none
+    }
+
+        .users li {
+            list-style-type: none
+        }
+
+    .filters {
+        width: 100%;
+        font-size: 30px;
+        height: 400px;
+        overflow: scroll;
+        text-align: center;
+        padding: 5px;
+        border: 1px solid silver;
+        border-radius: 10px;
+        overflow-x: hidden;
+        margin-top: 7%;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .GameForFilter {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .serach {
+        text-align: center;
+    }
+
+        .serach input, button {
+            margin-left: auto;
+            margin-right: auto;
+        }
+}
+
+.GameFilterPage {
+    display: flex;
+    padding: 20px;
+}
+
+footer {
+    margin-top: 60px;
+}
+
+#close-imageParentName {
+    height: 21px;
+    width: 21px;
+    display: none;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+    padding: 0;
+    text-align: center;
+}
+
+#close-imageQuoteText {
+    height: 21px;
+    width: 21px;
+    display: none;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+    padding: 0;
+    text-align: center;
+}
+
+.Filters {
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+
+#ordersTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.currentUserTable {
+    background-color: #DAFBB5;
+}
+
+#ordersTable td, #ordersTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#ordersTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#ordersTable tr:hover {
+    background-color: #ddd;
+}
+
+#ordersTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #424242;
+    color: white;
+    text-align: center;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+    #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+.allPublishers {
+    width: 100% !important;
+    padding: 20px;
+    width: 100%;
+}
+
+.newPublisher {
+    margin-left: 10%;
+}
+
+.allUsers {
+    padding: 20px;
+}
+
+.allRoles {
+    padding: 20px;
+}
+
+.basket {
+    padding: 20px;
+}
+
+.orders {
+    padding: 20px;
+}
+
+.userPage {
+    padding: 20px;
+}
+
+.allOrders {
+    padding: 20px;
+}
+
+.allGenres {
+    padding: 20px;
+}
+
+.allPlatforms {
+    padding: 20px;
+}
+
+.newEntity {
+    padding: 20px;
+}
+
+.newGamePlatforms {
+    height: 200px;
+    width: 180px;
+    overflow: scroll;
+    text-align: left;
+    padding: 5px;
+    border: 1px solid silver;
+    border-radius: 10px 10px 10px 10px;
+    overflow-x: hidden;
+    margin: auto;
+}
+
+.newGameGenres {
+    height: 200px;
+    width: 160px;
+    overflow: scroll;
+    text-align: left;
+    padding: 5px;
+    border: 1px solid silver;
+    border-radius: 10px 10px 10px 10px;
+    overflow-x: hidden;
+    margin: auto;
+}
+
+.mainCheck {
+    display: flex;
+    justify-content: center
+}
+
+.bntForGames {
+    width: 80px !important;
+}
+
+.Modal {
+    z-index: 100 !important;
+}
+
+.modal-backdrop {
+    z-index: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    opacity: 0 !important;
+}
+
+.gameImage {
+    width: 100%;
+    height: 100%;
+}
+
+.ratingText {
+    color: white;
+    border-radius: 6px;
+    background: #5FD200;
+    border: 1px solid #5FD200;
+    padding: 4px 10px 3px 10px;
+}
+
+.bntForVote {
+    color: white;
+    background: #5FD200;
+    border: 1px solid #5FD200;
+    border-radius: 15px;
+    padding: 5px 8px 3px 8px;
+    text-decoration: none !important;
+}
+
+    .bntForVote:hover {
+        color: white;
+        background: #4FAD03;
+        border: 1px solid #4FAD03;
+    }

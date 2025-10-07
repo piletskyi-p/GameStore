@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@using GameStore.Web.App_LocalResources
+@model IEnumerable<GameStore.Web.Models.ViewModels.PublisherViewModel>
+
+@{
+    ViewBag.Title = "AllGames";
+}
+
+<div class="allPublishers">
+    <h1>@GlobalRes.Publishers</h1>
+    <table class="table" style="text-align: center;">
+        <tbody>
+            @foreach (var pub in Model)
+            {
+                <tr>
+                    <th> @pub.CompanyName</th>
+                    <td>@pub.HomePage</td>
+                    <td style="text-align: left;">
+                        <div class="btn-group dropright">
+                            @Html.ActionLink(@GlobalRes.Details, "PublisherDetails", "Publisher", new { CompanyName = pub.CompanyName }, new { @class = "btn btn-primary" })
+                            @if (Context.User.IsInRole("Publisher") || Context.User.IsInRole("Manager"))
+                            {
+                                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+
+                                    @Html.ActionLink(@GlobalRes.Edit, "EditPublisher", "Publisher", new { CompanyName = pub.CompanyName }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Remove, "RemovePublisher", "Publisher", new { CompanyName = pub.CompanyName }, new { @class = "dropdown-item" })
+
+                                </div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Context.User.IsInRole("Publisher") || Context.User.IsInRole("Manager"))
+    {
+        <div style="margin-top: 50px">
+            @Html.ActionLink(@GlobalRes.New, "NewPublisher", "Publisher", new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>
+

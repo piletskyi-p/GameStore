@@ -1,0 +1,85 @@
+﻿@using GameStore.Web.App_LocalResources
+@model System.Collections.Generic.IEnumerable<GameStore.Web.Models.ViewModels.UserViewModel>
+
+@{
+    ViewBag.Title = "title";
+    int counter = 1;
+}
+
+
+<div class="allUsers">
+    @if (Model.Any())
+    {
+        <h1 style="text-align: center;">@GlobalRes.Users</h1>
+
+        @*<table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@GlobalRes.Name</th>
+                        <th scope="col">@GlobalRes.Surname</th>
+                        <th scope="col">@GlobalRes.Email</th>
+                        <th scope="col">@GlobalRes.IsPersistent</th>
+                        <th scope="col">@GlobalRes.IsBanned</th>
+                        <th scope="col">@GlobalRes.Roles</th>
+                        <th scope="col">@GlobalRes.Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@user.Name</td>
+                            <td>@user.Surname</td>
+                            <td>@user.Email</td>
+                            <td>@user.IsPersistent</td>
+                            <td>@user.IsBanned</td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    <p>@role.Name</p>
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink(@GlobalRes.Edit, "EditUser", "User", new { Id = user.Id }, new { @class = "btn btn-light" })
+                            </td>
+                        </tr>
+                        counter++;
+
+
+                    }
+                </tbody>
+            </table>*@
+
+        foreach (var user in Model)
+        {
+            <div class="users" style="display: flex; justify-content: space-around">
+                <div>
+                    <p><b>@user.Name @user.Surname</b></p>
+                    <p><b>Email: </b> @user.Email</p>
+                    <p><b>IsPersistent: </b> @user.IsPersistent</p>
+                    <p><b>IsBanned: </b>  @user.IsBanned</p>
+                    <p>
+                        <b>Roles: </b>
+                        <ul>
+                            @foreach (var role in user.Roles)
+                            {
+                                <li>@role.Name</li>
+                            }
+                        </ul>
+                    </p>
+                </div>
+                <div>
+                    @Html.ActionLink(@GlobalRes.Edit, "EditUser", "User", new { Id = user.Id }, new { @class = "btn btn-success" })
+                </div>
+            </div>
+            <hr />
+        }
+    }
+    else
+    {
+        <h1>GameStore doesn't have any users.</h1>
+    }
+</div>
+

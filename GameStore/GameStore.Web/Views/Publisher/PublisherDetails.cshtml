@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@model GameStore.Web.Models.ViewModels.PublisherViewModel
+@{
+    ViewBag.Title = "GameDetails";
+}
+
+<div style="padding: 20px;">
+    <h1>@Model.CompanyName</h1>
+    <p>@Model.Description</p> <br /> <br />
+    <a href="@Model.HomePage" target="_blank">@Model.HomePage </a>
+</div>

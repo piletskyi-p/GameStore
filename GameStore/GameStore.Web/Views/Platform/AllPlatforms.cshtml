@@ -1,0 +1,45 @@
+﻿@using GameStore.Web.App_LocalResources
+@model IEnumerable<GameStore.Web.Models.ViewModels.PlatformViewModel>
+
+@{
+    int counter = 1;
+}
+
+<div class="allPlatforms">
+    @if (Model.Count() != 0)
+    {
+        <h1>@GlobalRes.Platforms</h1>
+        <table class="table" style="text-align: center;">
+            <tbody>
+                @foreach (var platform in Model)
+                {
+                    <tr>
+                        <th scope="row">@counter</th>
+                        <td>@platform.Type</td>
+
+                        <td style="text-align: left; margin-left: 30px;">
+                            <div class="btn-group dropright">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu">
+                                    @Html.ActionLink(@GlobalRes.Edit, "Edit", "Platform", new { id = platform.Id }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Remove, "Remove", "Platform", new { id = platform.Id }, new { @class = "dropdown-item" })
+                                </div>
+                            </div>
+                        </td>
+                        @{ counter++;}
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>@GlobalRes.NotHaveGenres.</h1>
+    }
+    <div style="margin-top: 50px">
+        @Html.ActionLink(GlobalRes.New, "NewPlatform", "Platform", new { @class = "btn btn-primary" })
+    </div>
+</div>

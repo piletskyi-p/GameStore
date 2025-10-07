@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.OrderViewModel
+
+<div class="orders">
+    <h1>@GlobalRes.Basket</h1>
+    <table class="table" style="text-align: center;">
+        <tbody>
+            <tr>
+                <th><img style="width: 70px; height: 50px; margin: auto;" src="~/Content/Images/BankImg.jpg" /></th>
+                <td>@GlobalRes.Bank</td>
+                <td>@GlobalRes.PayUsingYourBank.</td>
+                <td>
+                    @Html.ActionLink(@GlobalRes.Pay, "PayBank", "Order", new { }, new { @class= "btn btn-primary", target = "_blank" })
+                </td>
+            </tr>
+            <tr>
+                <th><img style="width: 70px; height: 50px; margin: auto;" src="~/Content/Images/IBoxImg.jpg" /></th>
+                <td>IBox</td>
+                <td>@GlobalRes.PayViaIbox </td>
+                <td>
+                    @Html.ActionLink(GlobalRes.Pay, "IBox", "Order", new { }, new { @class = "btn btn-primary", target = "_blank" })
+                </td>
+            </tr>
+            <tr>
+                <th><img style="width: 70px; height: 50px; margin: auto;" src="~/Content/Images/VisaImg.jpg" /></th>
+                <td>Visa</td>
+                <td>@GlobalRes.PayViaVisa.</td>
+                <td>
+                    @Html.ActionLink(GlobalRes.Pay, "VisaView", "Order", new { }, new { @class = "btn btn-primary", target = "_blank" })
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div style="margin-top: 50px">
+        <table class="table">
+            <thead >
+                <tr>
+                    <th scope="col">@GlobalRes.Key</th>
+                    <th scope="col">@GlobalRes.Price</th>
+                    <th scope="col">@GlobalRes.Quantity</th>
+                    <th scope="col">@GlobalRes.Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model.OrderDetails)
+                {
+                    <tr>
+                        <th scope="row">@detail.ProductID</th>
+                        <td>@detail.Price</td>
+                        <td>@detail.Quantity</td>
+                        <td>@detail.Discount </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

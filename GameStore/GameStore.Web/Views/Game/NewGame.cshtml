@@ -1,0 +1,165 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.GameViewModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "NewGame";
+}
+
+<div style="padding: 20px; text-align: center">
+    <h1>@GlobalRes.New @GlobalRes.Game</h1>
+    @using (Html.BeginForm("NewGame", "Game", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div style="text-align: center;">
+            <div>
+                <div class="form-group">
+                    <label>@GlobalRes.Key</label>
+                    @Html.TextBoxFor(ed => ed.Key, "",
+                        new {@class = "form-control", style="margin: auto;",placeholder = @GlobalRes.Key, value = Model.Key})
+                </div>
+                @Html.ValidationMessageFor(val => val.Key, "", new { style = "color: red;" })<br>
+                <div class="form-group">
+                    @Html.TextBoxFor(ed => ed.Name, "",
+                        new {@class = "form-control", style = "margin: auto;", placeholder = @GlobalRes.Name, value = Model.Name})
+                </div>
+                @Html.ValidationMessageFor(val => val.Name, "", new { style = "color: red;" })<br>
+                <div class="form-group">
+                    <label for="price">@GlobalRes.Price </label><br />
+                    @Html.EditorFor(ed => ed.Price, "",
+                        new {@class = "form-control", id = "price", placeholder = @GlobalRes.Price, value = Model.Price})
+                </div>
+                @Html.ValidationMessageFor(val => val.Price, "", new { style = "color: red;" })<br>
+                <div class="form-group">
+                    <label for="unit">@GlobalRes.UnitInStock </label><br />
+                    @Html.EditorFor(ed => ed.UnitInStock, "",
+                        new {@class = "form-control", id = "unit", placeholder = @GlobalRes.UnitInStock, value = Model.UnitInStock})
+                </div>
+                @Html.ValidationMessageFor(val => val.UnitInStock, "", new { style = "color: red;" })<br>
+                <input type="checkbox" id="disc"
+                       name="IsDiscontinued" value="@Model.IsDiscontinued">
+                <label for="disc">@GlobalRes.IsDiscontinued</label>
+                <br />
+
+                <div class="mainCheck">
+                    <div style="text-align: center;">
+                        <h1>@GlobalRes.Platforms</h1>
+                        <div class="newGamePlatforms">
+                            @foreach (var item in Model.Platforms)
+                            {
+                                if (Model.PlatformsIds.IndexOf(item.Id) != -1)
+                                {
+                                    <input type="checkbox" id="{platform}@item.Id"
+                                           name="PlatformsIds" value="@item.Id" checked>
+                                    <label for="{platform}@item.Id">@item.Type</label>
+                                    <br />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="{platform}@item.Id"
+                                           name="PlatformsIds" value="@item.Id">
+                                    <label for="{platform}@item.Id">@item.Type</label>
+                                    <br />
+                                }
+                            }
+
+                        </div>
+                        @Html.ValidationMessageFor(val => val.PlatformsIds, "", new { style = "color: red;" })
+                    </div><br />
+                    <div>
+                        <h1>Publisher</h1>
+                        <p>
+                            @Html.DropDownListFor(model => model.PublisherId, Model.PublisherSelect)
+                        </p>
+                        @Html.ValidationMessageFor(i => i.PublisherId, "", new { style = "color: red;" })
+                    </div>
+
+                    <div>
+                        <h1>@GlobalRes.Genre</h1>
+                        <div class="newGameGenres">
+                            @foreach (var g in Model.Genres)
+                            {
+                                if (g.ParentId == 0)
+                                {
+                                    if (Model.GenresIds.IndexOf(g.Id) != -1)
+                                    {
+                                        <div>
+                                            <input type="checkbox" value="@g.Id" checked name="GenresIds" id="{genre}@g.Id">
+                                            <label class="form-check-label" for="{genre}@g.Id">@g.Name</label> <br />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <input type="checkbox" value="@g.Id" name="GenresIds" id="{genre}@g.Id">
+                                            <label class="form-check-label" for="{genre}@g.Id">@g.Name</label> <br />
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.GenresIds.IndexOf(g.Id) != -1)
+                                    {
+                                        <div style="margin-left: 20px;">
+                                            <input type="checkbox" value="@g.Id" checked name="GenresIds" id="{genre}@g.Id">
+                                            <label class="form-check-label" for="{genre}@g.Id">@g.Name</label> <br />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="margin-left: 20px;">
+                                            <input type="checkbox" value="@g.Id" name="GenresIds" id="{genre}@g.Id">
+                                            <label class="form-check-label" for="{genre}@g.Id">@g.Name</label> <br />
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        @Html.ValidationMessageFor(i => i.GenresIds, "", new { style = "color: red;" })<br />
+
+                    </div>
+
+                </div>
+
+                <label style="margin-top: 20px;">@GlobalRes.Description</label>
+                @for (int i = 0; i < Model.GameTranslates.Count; ++i)
+                {
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <img src="~/Content/Images/@{@Html.Raw(Model.GameTranslates[i].Language.Key)}.jpg" style="width: 20px; height: 20px;" />
+                        </span>
+                        @Html.TextAreaFor(ed => ed.GameTranslates[i].Description, new { @class = "form-control", style = "max-width:100%;", placeholder = @GlobalRes.Name })<br>
+                        @Html.ValidationMessageFor(val => val.GameTranslates[i].Description, "", new { style = "color: red;" })
+
+                        @Html.HiddenFor(ed => ed.GameTranslates[i].LanguageId, new { value = Model.GameTranslates[i].LanguageId })
+                        @Html.HiddenFor(ed => ed.GameTranslates[i].GameId, new { value = Model.GameTranslates[i].GameId })
+                    </div>
+                    <br />
+                }
+
+
+                <div>
+                    <b>@GlobalRes.Publication @GlobalRes.Date:</b><br />
+                    @Html.TextBoxFor(x => x.PublicationDate, "{0:yyyy-MM-dd}", new { @type = "date" })
+                    @*<input type="date" name="PublicationDate" value="@Model.PublicationDate.ToString("{0:yyyy-MM-dd}")">*@
+                    @Html.ValidationMessageFor(val => val.PublicationDate, "", new { style = "color: red;" })
+                </div>
+                <br />
+
+                <div>
+                    <div class="input-group">
+                        <label for="File">@GlobalRes.Image</label>
+                        <input type="file" style="margin: auto;" name="File" data-buttonText="Image" id="File">
+                    </div>
+                </div>
+                <br />
+                @Html.ValidationMessageFor(val => val.File, "", new { style = "color: red;" })
+                <br />
+                <button class="btn btn-secondary" type="submit">@GlobalRes.Add</button>
+            </div>
+        </div>
+        <br /><br />
+    }
+
+</div>

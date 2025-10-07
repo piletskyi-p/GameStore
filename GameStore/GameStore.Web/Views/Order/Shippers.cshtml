@@ -1,0 +1,26 @@
+﻿@model System.Collections.Generic.IEnumerable<GameStore.Web.Models.ViewModels.ShippersViewModel>
+
+<h1>Shippers</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">ShipperId</th>
+        <th scope="col">CompanyName</th>
+        <th scope="col">Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ship in Model)
+    {
+        <tr>
+            <th scope="row">@ship._id</th>
+            <td>@ship.ShipperID</td>
+            <td>@ship.CompanyName</td>
+            <td>@ship.Phone</td>
+        </tr>
+    }
+    </tbody>
+</table>

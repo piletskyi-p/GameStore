@@ -1,0 +1,30 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.PlatformViewModel
+
+@{
+    ViewBag.Title = "NewPlatfrom";
+}
+
+<div class="newEntity">
+    <h1>@GlobalRes.New @GlobalRes.Platform</h1>
+    @using (Html.BeginForm("NewPlatform", "Platform", FormMethod.Post))
+    {
+        for (int i = 0; i < Model.PlatformTranslates.Count; ++i)
+        {
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <img src="~/Content/Images/@{ @Html.Raw(Model.PlatformTranslates[i].Language.Key)}.jpg" style="width: 20px; height: 20px; " />
+                </span>
+                @Html.TextBoxFor(ed => ed.PlatformTranslates[i].Type, "", new { @class = "form-control", placeholder = @GlobalRes.Name })<br>
+                @Html.ValidationMessageFor(val => val.PlatformTranslates[i].Type, "", new { style = "color: red;" })
+
+                @Html.HiddenFor(ed => ed.PlatformTranslates[i].LanguageId, new { value = Model.PlatformTranslates[i].LanguageId })
+                @Html.HiddenFor(ed => ed.PlatformTranslates[i].PlatformId, new { value = Model.PlatformTranslates[i].PlatformId })
+                @Html.HiddenFor(ed => ed.PlatformTranslates[i].Id, new { value = Model.PlatformTranslates[i].Id })
+            </div>
+            <br />
+        }
+        <br />
+        <button class="btn btn-success" id="btnForLogIn" type="submit">@GlobalRes.Add</button>
+    }
+</div>

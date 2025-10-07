@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@using GameStore.Web.App_LocalResources
+@using GameStore.Web.Helpers
+@model GameStore.Web.Models.ViewModels.IndexGameViewModel
+
+
+@{
+    ViewBag.Title = "AllGames";
+}
+<div style="padding: 20px;">
+    @if (Model.Games.Count() != 0)
+    {
+        <h1>@GlobalRes.Games:</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">@GlobalRes.Key</th>
+                    <th scope="col">@GlobalRes.Name</th>
+                    <th scope="col">@GlobalRes.Price</th>
+                    <th scope="col">@GlobalRes.UnitInStock</th>
+                    <th scope="col">@GlobalRes.Details</th>
+                    @if (Context.User.IsInRole("Manager"))
+                    {
+                        <th scope="col">@GlobalRes.Edit</th>
+                        <th scope="col">@GlobalRes.Remove</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model.Games)
+                {
+                    <tr>
+                        <th scope="col">@game.Key</th>
+                        <td>@game.Name</td>
+                        <td>@game.Price</td>
+                        <td>@game.UnitInStock</td>
+                        <td>
+                            @Html.ActionLink(@GlobalRes.Details, "GetGameDetailsByKey", "Game", new { key = game.Key }, new { style = "color: blue;" })
+
+                            @if (!game.IsDeleted)
+                            {
+                                if (Context.User.IsInRole("Manager"))
+                                {
+
+                                    @Html.ActionLink(@GlobalRes.Edit, "EditGame", "Game", new { id = game.Id }, new { style = "color: blue;" })
+
+                                    @Html.ActionLink(@GlobalRes.Remove, "Remove", "Game", new { id = game.Id }, new { style = "color: blue;" })
+
+                                }
+                            }
+                            else
+                            {
+                                <p style="color: silver">@GlobalRes.Edit</p>
+                                <p style="color: silver">@GlobalRes.Remove</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        if (Model.PageInfo.TotalPages > 1)
+        {
+            <div style="width: 100%; text-align: center;">
+                <div class="btn-group">
+                    @Html.PageLinks(Model.PageInfo, x => Url.Action("GetAllGames", new { page = x }))
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        <h1>@GlobalRes.ListOfGamesIsEmpty.</h1>
+    }
+
+</div>

@@ -1,0 +1,158 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.EditUserViewModel
+
+@{
+    int counter = 1;
+}
+
+@using (Html.BeginForm("EditUser", "User", new { Id = Model.Id, BannedUntil = Model.BannedUntil }, FormMethod.Post))
+{
+    <div class="editUser" style="padding: 20px; display: flex; justify-content: space-around">
+        <div>
+            <h1>@GlobalRes.Edit:</h1>
+            <input type="text" name="Password" value="@Model.Password" hidden />
+            <div class="form-group">
+                <label>@GlobalRes.Name:</label>
+                @Html.TextBox(@GlobalRes.Name, Model.Name, new { @class = "form-control", @id = "exampleInputEmail1", @readonly = true })
+                @Html.ValidationMessage("Name")
+            </div>
+            <div class="form-group">
+                <label>@GlobalRes.Surname:</label>
+                @Html.TextBox(@GlobalRes.Surname, Model.Surname, new { @class = "form-control", @id = "exampleInputEmail1", @readonly = true })
+                @Html.ValidationMessage("Surname")
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                @Html.TextBox(@GlobalRes.Email, Model.Email, new { @class = "form-control", @id = "exampleInputEmail1", @readonly = true })
+                @Html.ValidationMessage("Email")
+            </div>
+
+            <div class="form-group form-check">
+                @Html.CheckBoxFor(model => model.IsPersistent, new { id = "Check1", @readonly = true })
+                <label for="Check1">@GlobalRes.IsPersistent</label>
+            </div>
+            <div class="form-group form-check">
+                @Html.CheckBoxFor(model => model.IsDeleted, new { id = "Check3" })
+                <label for="Check3">@GlobalRes.IsDeleted</label>
+            </div>
+        </div>
+        <div style="margin-left: 50px; margin-top: 5px;">
+            <h2>@GlobalRes.Roles:</h2>
+            <div class="form-group form-check">
+                @foreach (var role in Model.AllRoles)
+                {
+                    if (Model.Roles.Any(rol => rol.Name == role.Name))
+                    {
+                        if (role.Name == "Manager")
+                        {
+                            <input name="RoleIds" onclick="ShowSender('{role}@role.Id')" type="checkbox" id="{role}@role.Id" value="@role.Id" checked>
+                            <label for="{role}@role.Id">@role.Name</label>
+                        }
+                        else if (role.Name != "Publisher")
+                        {
+                            <input name="RoleIds" type="checkbox" id="{role}@role.Id" value="@role.Id" checked>
+                            <label for="{role}@role.Id">@role.Name</label>
+                        }
+                        else
+                        {
+                            <input name="RoleIds" onclick="ShowPublishers('{role}@role.Id')" type="checkbox" id="{role}@role.Id" value="@role.Id" checked>
+
+                            <label for="{role}@role.Id"> @role.Name </label>
+                        }
+
+                    }
+                    else
+                    {
+                        if (role.Name == "Manager")
+                        {
+                            <input name="RoleIds" onclick="ShowSender('{role}@role.Id')" type="checkbox" id="{role}@role.Id" value="@role.Id">
+                            <label for="{role}@role.Id">@role.Name</label>
+                        }
+
+                        else if (role.Name != "Publisher")
+                        {
+                            <input name="RoleIds" type="checkbox" id="{role}@role.Id" value="@role.Id">
+                            <label for="{role}@role.Id">@role.Name</label>
+                        }
+                        else
+                        {
+                            <input name="RoleIds" onclick="ShowPublishers('{role}@role.Id')" type="checkbox" id="{role}@role.Id" value="@role.Id">
+
+                            <label for="{role}@role.Id"> @role.Name </label>
+                        }
+                    }
+                    <br />
+                }
+            </div>
+            @Html.ValidationMessage("RoleIds")
+            <div class="form-group" id="AllPublishers">
+                <div class="form-group">
+                    <label for="publishers">@GlobalRes.Publishers</label>
+                    @Html.DropDownListFor(model => model.PublisherId, Model.Publishers,
+                        new{@class= "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group" id="Sender">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Sender</label>
+                    <select class="form-control" name="SenderTypeId" id="exampleFormControlSelect1">
+                        <option value="0">Email</option>
+                        <option value="1">Mobile</option>
+                        <option value="2">Sms</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <button type="submit" style="margin: auto;" class="btn btn-primary">@GlobalRes.Edit</button>
+    </div>
+
+}
+
+    <script>
+    function ShowPublishers(checkboxId) {
+        console.log("ShowPublishers", checkboxId);
+        var divPublisher = document.getElementById('AllPublishers');
+        var checkBox = document.getElementById(checkboxId);
+        if (checkBox.checked) {
+            divPublisher.style.display = "block";
+            console.log("Display");
+        } else {
+            divPublisher.style.display = "none";
+            console.log("Hide");
+        }
+    }
+
+    function ShowSender(checkboxId) {
+        console.log("ShowSender", checkboxId);
+        var divPublisher = document.getElementById('Sender');
+        var checkBox = document.getElementById(checkboxId);
+        if (checkBox.checked) {
+            divPublisher.style.display = "block";
+            console.log("Display");
+        } else {
+            divPublisher.style.display = "none";
+            console.log("Hide");
+        }
+    }
+
+    window.onload = function () {
+        var checkBox = document.getElementById("{role}@Model.AllRoles.Where(role => role.Name == "Publisher").First().Id");
+        var divPublisher = document.getElementById('AllPublishers');
+        if (checkBox.checked) {
+            divPublisher.style.display = "block";
+        } else {
+            divPublisher.style.display = "none";
+        }
+
+        var checkBox = document.getElementById("{role}@Model.AllRoles.Where(role => role.Name == "Manager").First().Id");
+        var divPublisher = document.getElementById('Sender');
+        if (checkBox.checked) {
+            divPublisher.style.display = "block";
+        } else {
+            divPublisher.style.display = "none";
+        }
+    };
+    </script>

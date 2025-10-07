@@ -1,0 +1,57 @@
+﻿@using GameStore.Web.App_LocalResources
+@using GameStore.Web.Helpers
+@model GameStore.Web.Models.ViewModels.EmptyOrdersView
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    int coutner = (Model.PageInfo.PageNumber - 1) * Model.PageInfo.PageSize;
+}
+
+
+<div class="allOrders">
+    <h1>@GlobalRes.Orders</h1>
+    <hr />
+    <div class="Filters">
+        @using (Html.BeginForm("OrderFilter", "Order", FormMethod.Post))
+        {
+            <h1>@GlobalRes.Filter</h1>
+            <p>@GlobalRes.From: <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" name="dateFrom" required> </p>
+            <p> @GlobalRes.To: <input type="date" value="@Model.DateTo.ToString("yyyy-MM-dd")" name="dateTo" required></p>
+            <button class="btn btn-secondary" type="submit">Filter</button>
+        }
+    </div>
+    @if (Model.Orders.Any())
+    {
+        <table class="table" id="ordersTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>@GlobalRes.CustomerID</th>
+                    <th>@GlobalRes.Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    { coutner++; }
+                    <tr>
+                        <td>@coutner</td>
+                        <td>@order.CustomerId</td>
+                        <td>@order.OrderDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div style="width: 100%; text-align: center; ">
+            <div class="btn-group">
+                @Html.PageLinks(Model.PageInfo, x => Url.Action("OrderFilter",
+                    new { dateFrom = Model.DateFrom, dateTo = Model.DateTo, page = x }))
+            </div>
+        </div>
+    }
+    else
+    {
+        <h1 style="color: silver;">@GlobalRes.NotFound</h1>
+    }
+</div>

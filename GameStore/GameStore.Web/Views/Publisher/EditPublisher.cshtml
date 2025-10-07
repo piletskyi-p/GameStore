@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.PublisherViewModel
+
+@{
+    ViewBag.Title = "NewGame";
+}
+
+<div class="newPublisher">
+    <h1>@GlobalRes.Edit @GlobalRes.Publisher</h1>
+    @using (Html.BeginForm(@GlobalRes.Edit, "Publisher", new { Id = Model.Id }, FormMethod.Post))
+    {
+        <div class="input-group">
+            @Html.TextBoxFor(model => model.CompanyName, "", new { @class = "form-control", placeholder = @GlobalRes.CompanyName })<br>
+            @Html.ValidationMessageFor(val => val.CompanyName, "", new { style = "color: red;" })
+        </div>
+        <br />
+        <div class="input-group">
+            @Html.TextBoxFor(model => model.HomePage, "", new { @class = "form-control", placeholder = @GlobalRes.HomePage })<br>
+            @Html.ValidationMessageFor(val => val.HomePage, "", new { style = "color: red;" })
+        </div>
+        <br />
+        for (int i = 0; i < Model.PublisherTranslate.Count; ++i)
+        {
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <img src="~/Content/Images/@{ @Html.Raw(Model.PublisherTranslate[i].Language.Key)}.jpg" style="width: 20px; height: 20px; " />
+                </span>
+                @Html.TextBoxFor(ed => ed.PublisherTranslate[i].Description, "", new { @class = "form-control", placeholder = @GlobalRes.Description })<br>
+                @Html.ValidationMessageFor(val => val.PublisherTranslate[i].Description, "", new { style = "color: red;" })
+
+                @Html.HiddenFor(ed => ed.PublisherTranslate[i].LanguageId, new { value = Model.PublisherTranslate[i].LanguageId })
+                @Html.HiddenFor(ed => ed.PublisherTranslate[i].PublisherId, new { value = Model.PublisherTranslate[i].PublisherId })
+            </div>
+            <br />
+        }
+        <br />
+        <button class="btn btn-secondary" id="btnForLogIn" onclick="AddLists()" type="submit">@GlobalRes.Edit</button>
+    }
+
+</div>

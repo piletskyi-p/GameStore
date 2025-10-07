@@ -1,0 +1,31 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.BanViewModel
+
+@using (Html.BeginForm("BanHandler", "Comment", new { CommentId = Model.CommentId, GameKey = Model.GameKey }, FormMethod.Post))
+{
+    <div style="margin-top: 1%;">
+        <h1>@GlobalRes.ChoosePeriod:</h1>
+        <div>
+            <input type="radio" id="hour"
+                   name="Period" value="hour" checked>
+            <label for="hour">@GlobalRes.Hour</label>
+            <br />
+            <input type="radio" id="day"
+                   name="Period" value="day">
+            <label for="day">@GlobalRes.Hour</label>
+            <br />
+            <input type="radio" id="week"
+                   name="Period" value="week">
+            <label for="week">@GlobalRes.Week</label>
+            <br />
+            <input type="radio" id="month"
+                   name="Period" value="month">
+            <label for="month">@GlobalRes.Month</label>
+            <br />
+            <input type="radio" id="permanent"
+                   name="Period" value="permanent">
+            <label for="permanent">@GlobalRes.Permanent</label>
+        </div>
+        <button class="btn btn-secondary btn-sm" style="margin-left: 1%" id="btnForLogIn" type="submit">@GlobalRes.Ban</button>
+    </div>
+}

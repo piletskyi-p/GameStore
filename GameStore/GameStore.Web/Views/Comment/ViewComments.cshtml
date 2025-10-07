@@ -1,0 +1,75 @@
+﻿@using GameStore.Web.App_LocalResources
+@using GameStore.Web.Models.ViewModels
+@model CommentsViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "ViewComments";
+}
+
+<script>
+    var idComment;
+
+    var del = function (idcomment, idgame) {
+        document.getElementById("idComment").value = idcomment;
+        document.getElementById("idGame").value = idgame;
+        console.log("idComment:", idcomment);
+        console.log("idgame:", idgame);
+    }
+
+    @*function DeleteCommentBtn() {
+        console.log("deletebtn");
+        $("#AllCommentsPartial").load('@Url.Action("DeleteComment", "Comment")',
+            { 'commentid': idComment, 'gameid': @Model.Comments.First().GameId });
+    }*@
+</script>
+
+
+
+
+<div style="padding: 20px;">
+    <h1>@GlobalRes.Comments:</h1>
+
+    @using (Html.BeginForm("LeaveCommentForGame", "Comment", new
+    { GameKey = Model.GameKey }, FormMethod.Post))
+    {
+        <div id="AllCommentsPartial">
+
+            @Html.Partial("AllCommentsPartial", Model)
+        </div>
+    }
+
+</div>
+
+@using (Html.BeginForm("DeleteComment", "Comment", FormMethod.Post))
+{
+    <input type="text" id="idComment" name="commentId" hidden />
+    <input type="text" id="idGame" name="gameId" hidden />
+    <!-- The Modal -->
+    <div class="modal Modal" id="Modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">@GlobalRes.DeleteComment</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h3>@GlobalRes.DeleteThisComment?</h3>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@GlobalRes.No</button>
+                    <button type="submit" class="btn btn-primary">@GlobalRes.Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+

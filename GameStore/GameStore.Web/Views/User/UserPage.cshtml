@@ -1,0 +1,66 @@
+﻿@using GameStore.Web.App_LocalResources
+@model GameStore.Web.Models.ViewModels.UserViewModel
+
+<div class="userPage">
+    <h1>@Model.Name @Model.Surname</h1>
+    @if (Model.IsBanned)
+    {
+        <small style="color: red">@GlobalRes.Banned</small>
+    }
+    <p><b>@GlobalRes.Email: </b> @Model.Email</p>
+    <p>
+        <b>@GlobalRes.Roles: </b>
+        @foreach (var role in Model.Roles)
+        {
+            <br />
+            @role.Name
+        }
+    </p>
+
+    @if (Context.User.IsInRole("Publisher"))
+    {
+        <hr />
+        <div class="publisherInfo">
+            <h2>@GlobalRes.YouPublisherOf "@Model.Publisher.CompanyName"</h2>
+            <p>@Model.Publisher.Description</p>
+            <p><b>@GlobalRes.HomePage:</b>@Model.Publisher.HomePage</p>
+            @Html.ActionLink(@GlobalRes.Edit, "EditPublisher", "Publisher",
+                new { companyname = Model.Publisher.CompanyName}, new { @class = "btn btn-danger", role = "button" })
+        </div>
+        <hr />
+        <h2>@GlobalRes.YourGames:</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">@GlobalRes.Key</th>
+                    <th scope="col">@GlobalRes.Name</th>
+                    <th scope="col">@GlobalRes.Price</th>
+                    <th scope="col">@GlobalRes.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model.Publisher.Games)
+                {
+                    <tr>
+                        <th scope="row">@game.Key</th>
+                        <td>@game.Name</td>
+                        <td>@game.Price</td>
+                        <td style="text-align: left;">
+                            <div class="btn-group dropright">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu">
+                                    @Html.ActionLink(@GlobalRes.Edit, "EditGame", "Game", new {id = game.Id}, new {@class = "dropdown-item" })
+                                    @Html.ActionLink(@GlobalRes.Remove, "Remove", "Game", new {id = game.Id}, new {@class = "dropdown-item" })
+                                </div>
+                            </div>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
